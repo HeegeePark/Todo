@@ -52,7 +52,7 @@ class NewTodoViewController: BaseViewController {
             case .priority:
                 return PriorityViewController()
             case .image:
-                return nil
+                return ImageViewController()
             }
         }
         
@@ -128,9 +128,12 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.text = TodoType[indexPath]
         cell.textLabel?.font = .systemFont(ofSize: 13)
         
-        if TodoType.allCases[indexPath.section] == .content {
+        let type = TodoType.allCases[indexPath.section]
+        
+        switch type {
+        case .content:
             cell.textLabel?.textColor = .lightText
-        } else {
+        default:
             cell.textLabel?.textColor = .white
             cell.detailTextLabel?.text = data[indexPath.section]
             cell.accessoryType = .disclosureIndicator
@@ -149,7 +152,6 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = type.nextToPush!
             
             vc.passData = { data in
-                print(data)
                 self.data[indexPath.section] = data
                 self.tableView.reloadData()
             }
