@@ -50,7 +50,7 @@ class NewTodoViewController: BaseViewController {
             case .tag:
                 return TagViewController()
             case .priority:
-                return nil
+                return PriorityViewController()
             case .image:
                 return nil
             }
@@ -132,7 +132,6 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.textColor = .lightText
         } else {
             cell.textLabel?.textColor = .white
-            print("in Cell:", data[indexPath.section])
             cell.detailTextLabel?.text = data[indexPath.section]
             cell.accessoryType = .disclosureIndicator
         }
