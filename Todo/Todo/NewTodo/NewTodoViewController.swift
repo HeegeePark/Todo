@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol PassDataProtocol where Self: UIViewController {
+    var passData: ((String)-> Void)? { get set }
+}
+
 class NewTodoViewController: BaseViewController {
     
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -37,6 +41,10 @@ class NewTodoViewController: BaseViewController {
             return cellText.count
         }
         
+        var nextToPush: PassDataProtocol {
+            return DateViewController()
+        }
+        
         static func rowHeight(indexPath: IndexPath) -> CGFloat {
             return indexPath == [0, 1] ? 100: UITableView.automaticDimension
         }
@@ -45,6 +53,8 @@ class NewTodoViewController: BaseViewController {
             return TodoType.allCases[indexPath.section].cellText[indexPath.row]
         }
     }
+    
+    var data: [String] = Array(repeating: "", count: TodoType.allCases.count)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,12 +88,12 @@ class NewTodoViewController: BaseViewController {
     }
     
     override func configureView() {
-        view.backgroundColor = .systemBackground
+        super.configureView()
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.sectionHeaderHeight = 0
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(TodoCell.self, forCellReuseIdentifier: "cell")
     }
 
 }
@@ -102,7 +112,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoCell
         cell.selectionStyle = .none
         cell.textLabel?.text = TodoType[indexPath]
         cell.textLabel?.font = .systemFont(ofSize: 13)
@@ -110,9 +120,31 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
         if TodoType.allCases[indexPath.section] == .content {
             cell.textLabel?.textColor = .lightText
         } else {
+            cell.textLabel?.textColor = .white
+            print("in Cell:", data[indexPath.section])
+            cell.detailTextLabel?.text = data[indexPath.section]
             cell.accessoryType = .disclosureIndicator
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let type = TodoType.allCases[indexPath.section]
+        
+        switch type {
+        case .content:
+            break
+        default:
+            let vc = type.nextToPush
+            
+            vc.passData = { data in
+                print(data)
+                self.data[indexPath.section] = data
+                self.tableView.reloadData()
+            }
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
