@@ -41,8 +41,19 @@ class NewTodoViewController: BaseViewController {
             return cellText.count
         }
         
-        var nextToPush: PassDataProtocol {
-            return DateViewController()
+        var nextToPush: PassDataProtocol? {
+            switch self {
+            case .content:
+                return nil
+            case .deadline:
+                return DateViewController()
+            case .tag:
+                return TagViewController()
+            case .priority:
+                return nil
+            case .image:
+                return nil
+            }
         }
         
         static func rowHeight(indexPath: IndexPath) -> CGFloat {
@@ -136,7 +147,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
         case .content:
             break
         default:
-            let vc = type.nextToPush
+            let vc = type.nextToPush!
             
             vc.passData = { data in
                 print(data)
