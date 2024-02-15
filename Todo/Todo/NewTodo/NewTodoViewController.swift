@@ -133,6 +133,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
         switch type {
         case .content:
             cell.textLabel?.textColor = .lightText
+            cell.detailTextLabel?.text = nil
         default:
             cell.textLabel?.textColor = .white
             cell.detailTextLabel?.text = data[indexPath.section]
