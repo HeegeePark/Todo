@@ -15,57 +15,13 @@ class NewTodoViewController: BaseViewController {
     
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
-    enum TodoType: Int, CaseIterable {
-        case content
-        case deadline
-        case tag
-        case priority
-        case image
-        
-        var cellText: [String] {
-            switch self {
-            case .content:
-                return ["제목", "메모"]
-            case .deadline:
-                return ["마감일"]
-            case .tag:
-                return ["태그"]
-            case .priority:
-                return ["우선 순위"]
-            case .image:
-                return ["이미지 추가"]
-            }
-        }
-        
-        var numberOfRows: Int {
-            return cellText.count
-        }
-        
-        var nextToPush: PassDataProtocol? {
-            switch self {
-            case .content:
-                return nil
-            case .deadline:
-                return DateViewController()
-            case .tag:
-                return TagViewController()
-            case .priority:
-                return PriorityViewController()
-            case .image:
-                return ImageViewController()
-            }
-        }
-        
-        static func rowHeight(indexPath: IndexPath) -> CGFloat {
-            return indexPath == [0, 1] ? 100: UITableView.automaticDimension
-        }
-        
-        static subscript(indexPath: IndexPath) -> String {
-            return TodoType.allCases[indexPath.section].cellText[indexPath.row]
+    var content: [String] = Array(repeating: "", count: TodoType.content.numberOfRows) {
+        didSet {
+            tableView.reloadData()
         }
     }
     
-    var data: [String] = Array(repeating: "", count: TodoType.allCases.count) {
+    var fromPassData: [String] = Array(repeating: "", count: TodoType.allCases.count) {
         didSet {
             tableView.reloadData()
         }
@@ -108,7 +64,8 @@ class NewTodoViewController: BaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.sectionHeaderHeight = 0
-        tableView.register(TodoCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(TodoSubTitleStyleTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(TodoTextFieldTableViewCell.self, forCellReuseIdentifier: "tfCell")
     }
 
 }
@@ -127,25 +84,29 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoCell
-        cell.selectionStyle = .none
-        cell.textLabel?.text = TodoType[indexPath]
-        cell.textLabel?.font = .systemFont(ofSize: 13)
-        
         let type = TodoType.allCases[indexPath.section]
         
         switch type {
         case .content:
-            cell.textLabel?.textColor = .lightText
-            cell.detailTextLabel?.text = nil
-            cell.accessoryType = .none
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tfCell", for: indexPath) as! TodoTextFieldTableViewCell
+            cell.selectionStyle = .none
+            
+            cell.configure(index: indexPath.row, placeholder: TodoType[indexPath])
+            cell.todoText = content[indexPath.row]
+            cell.delegate = self
+            
+            return cell
         default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoSubTitleStyleTableViewCell
+            cell.selectionStyle = .none
+            
+            cell.textLabel?.text = TodoType[indexPath]
+            cell.textLabel?.font = .systemFont(ofSize: 13)
             cell.textLabel?.textColor = .white
-            cell.detailTextLabel?.text = data[indexPath.section]
+            cell.detailTextLabel?.text = fromPassData[indexPath.section]
             cell.accessoryType = .disclosureIndicator
+            return cell
         }
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -158,10 +119,16 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
             let vc = type.nextToPush!
             
             vc.passData = { data in
-                self.data[indexPath.section] = data
+                self.fromPassData[indexPath.section] = data
             }
             
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+}
+
+extension NewTodoViewController: TextFieldCellDelegate {
+    func didEditTodoText(_ newText: String, at index: Int) {
+        content[index] = newText
     }
 }
