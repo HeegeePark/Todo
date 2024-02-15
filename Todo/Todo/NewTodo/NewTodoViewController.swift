@@ -61,10 +61,9 @@ class NewTodoViewController: BaseViewController {
     }
     
     func asTodoModel() -> TodoModel {
-        let combined: [String?] = (content + fromPassData).map {
+        let combined: [String?] = (content + fromPassData[1...]).map {
             $0.isEmpty ? nil: $0
         }
-        
         return TodoModel(title: combined[0]!,
                          memo: combined[1],
                          deadline: DateManager.shared.toDate(string: combined[2] ?? ""),
