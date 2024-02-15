@@ -134,6 +134,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
         case .content:
             cell.textLabel?.textColor = .lightText
             cell.detailTextLabel?.text = nil
+            cell.accessoryType = .none
         default:
             cell.textLabel?.textColor = .white
             cell.detailTextLabel?.text = data[indexPath.section]
