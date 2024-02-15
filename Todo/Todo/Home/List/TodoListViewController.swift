@@ -47,19 +47,32 @@ class TodoListViewController: BaseViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "mainCell")
     }
     
-    func readRealm() {
-        let realm = try! Realm()
-        
-        todoList = realm.objects(TodoModel.self)
-    }
-    
     func configureNavigationBar() {
         navigationItem.title = "Todo 리스트"
-        let right = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(rightButtonClicked))
+        let right = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
+        
+        let action1 = UIAction(title: "마감일 순", handler: { _ in
+            let realm = try! Realm()
+            self.todoList = realm.objects(TodoModel.self).sorted(byKeyPath: "deadline", ascending: true)
+        })
+        let action2 = UIAction(title: "제목 순", handler: { _ in
+            let realm = try! Realm()
+            self.todoList = realm.objects(TodoModel.self).sorted(byKeyPath: "title", ascending: true)
+        })
+        let action3 = UIAction(title: "우선순위 낮음", handler: { _ in
+            let realm = try! Realm()
+            self.todoList = realm.objects(TodoModel.self).where {
+                $0.priority == "low"
+            }
+        })
+        
+        right.menu = UIMenu(title: "정렬 또는 필터링", options: .displayInline, children: [action1, action2, action3])
         navigationItem.rightBarButtonItem = right
     }
     
-    @objc func rightButtonClicked() {   
+    func readRealm() {
+        let realm = try! Realm()
+        todoList = realm.objects(TodoModel.self)
     }
 }
 
