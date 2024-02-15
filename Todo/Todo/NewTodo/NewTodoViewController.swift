@@ -56,6 +56,8 @@ class NewTodoViewController: BaseViewController {
         try! realm.write {
             realm.add(todo)
         }
+        
+        dismiss(animated: true)
     }
     
     func asTodoModel() -> TodoModel {
