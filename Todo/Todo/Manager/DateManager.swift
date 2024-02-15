@@ -14,12 +14,17 @@ class DateManager {
     
     private let dateFormatter: DateFormatter = {
         let format = DateFormatter()
-        format.dateFormat = "M월 dd일 a HH:mm"
+        format.dateFormat = "yyyy년 M월 dd일 a HH:mm"
+        format.timeZone = TimeZone(identifier: "Asia/Seoul")
         return format
     }()
     
     func toString(date: Date) -> String {
         return dateFormatter.string(from: date)
+    }
+    
+    func toDate(string: String) -> Date? {
+        return dateFormatter.date(from: string)
     }
 }
 

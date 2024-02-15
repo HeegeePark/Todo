@@ -15,13 +15,15 @@ class TodoModel: Object {
     @Persisted var deadline: Date? // 마감일
     @Persisted var tag: String? // 태그
     @Persisted var priority: String? // 우선순위
+    @Persisted var image: String? // 이미지
     
-    convenience init(title: String, memo: String? = nil, deadline: Date, tag: String? = nil, priority: String? = nil) {
+    convenience init(title: String, memo: String? = nil, deadline: Date? = nil, tag: String? = nil, priority: String? = nil, image: String? = nil) {
         self.init()
         self.title = title
         self.memo = memo
         self.deadline = deadline
         self.tag = tag
         self.priority = priority
+        self.image = image
     }
 }

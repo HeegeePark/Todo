@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol PassDataProtocol where Self: UIViewController {
     var passData: ((String)-> Void)? { get set }
@@ -39,13 +40,35 @@ class NewTodoViewController: BaseViewController {
         let leftItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(leftBarButtonClicked))
         navigationItem.leftBarButtonItem = leftItem
         
-        let rightItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: nil)
-        rightItem.isEnabled = false
+        let rightItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(rightBarButtonClicked))
         navigationItem.rightBarButtonItem = rightItem
     }
     
     @objc func leftBarButtonClicked() {
         dismiss(animated: true)
+    }
+    
+    @objc func rightBarButtonClicked() {
+        let realm = try! Realm()
+        
+        let todo = asTodoModel()
+        
+        try! realm.write {
+            realm.add(todo)
+        }
+    }
+    
+    func asTodoModel() -> TodoModel {
+        let combined: [String?] = (content + fromPassData).map {
+            $0.isEmpty ? nil: $0
+        }
+        
+        return TodoModel(title: combined[0]!,
+                         memo: combined[1],
+                         deadline: DateManager.shared.toDate(string: combined[2] ?? ""),
+                         tag: combined[3],
+                         priority: combined[4],
+                         image: combined[5])
     }
     
     override func configureHierarchy() {
