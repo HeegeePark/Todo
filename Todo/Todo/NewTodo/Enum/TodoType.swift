@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum TodoType: Int, CaseIterable {
+enum TodoType: String, CaseIterable {
     case content
     case deadline
     case tag
