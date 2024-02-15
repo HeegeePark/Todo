@@ -29,9 +29,10 @@ class HomeViewController: BaseViewController {
     override func configureView() {
         view.backgroundColor = .black
         
-        newTodoButton.setTitle("새로운 할 일", for: .normal)
-        newTodoButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        newTodoButton.addTarget(self, action: #selector(newTodoButtonClicked), for: .touchUpInside)
+        navigationController?.isToolbarHidden = false
+        // TODO: title 뜨게 고치기
+        let newTodo = UIBarButtonItem(title: "새로운 할 일", image: UIImage(systemName: "plus.circle.fill"), target: self, action: #selector(newTodoButtonClicked))
+        toolbarItems = [newTodo]
     }
     
     @objc func newTodoButtonClicked() {
