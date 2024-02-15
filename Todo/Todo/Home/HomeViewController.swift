@@ -91,4 +91,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if ListType.allCases[indexPath.item] == .all {
+            let vc = TodoListViewController()
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
