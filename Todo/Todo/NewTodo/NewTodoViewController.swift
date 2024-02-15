@@ -65,7 +65,11 @@ class NewTodoViewController: BaseViewController {
         }
     }
     
-    var data: [String] = Array(repeating: "", count: TodoType.allCases.count)
+    var data: [String] = Array(repeating: "", count: TodoType.allCases.count) {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,7 +159,6 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
             
             vc.passData = { data in
                 self.data[indexPath.section] = data
-                self.tableView.reloadData()
             }
             
             navigationController?.pushViewController(vc, animated: true)
