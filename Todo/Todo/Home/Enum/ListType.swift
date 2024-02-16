@@ -6,13 +6,29 @@
 //
 
 import UIKit
+import RealmSwift
 
 enum ListType: String, CaseIterable {
-    case today = "오늘"
-    case schedule = "예정"
-    case all = "전체"
-    case flag = "깃발 표시"
-    case done = "완료됨"
+    case today
+    case schedule
+    case all
+    case flag
+    case done
+    
+    var title: String {
+        switch self {
+        case .today:
+            return "오늘"
+        case .schedule:
+            return "예정"
+        case .all:
+            return "전체"
+        case .flag:
+            return "깃발 표시"
+        case .done:
+            return "완료됨"
+        }
+    }
     
     var imageString: String {
         switch self {
@@ -41,6 +57,20 @@ enum ListType: String, CaseIterable {
             return .systemYellow
         case .done:
             return .systemGray
+        }
+    }
+    
+    var totalCount: Int {
+        let realm = try! Realm()
+        switch self {
+        case .all:
+            let todos = realm.objects(TodoModel.self)
+            return todos.count
+        default:
+            let todos = realm.objects(TodoModel.self).where {
+                $0.tag == rawValue
+            }
+            return todos.count
         }
     }
 }

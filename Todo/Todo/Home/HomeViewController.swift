@@ -31,6 +31,11 @@ class HomeViewController: BaseViewController {
         super.viewDidLoad()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        collectionView.reloadData()
+    }
+    
     override func configureHierarchy() {
         view.addSubview(titleLabel)
         view.addSubview(collectionView)
@@ -71,9 +76,13 @@ class HomeViewController: BaseViewController {
     }
     
     @objc func newTodoButtonClicked() {
-        let vc = UINavigationController(rootViewController: NewTodoViewController())
+        let vc = NewTodoViewController()
         
-        present(vc, animated: true)
+        vc.addHandler = {
+            self.collectionView.reloadData()
+        }
+        
+        present(UINavigationController(rootViewController: vc), animated: true)
     }
 
 }
@@ -87,7 +96,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "statusCell", for: indexPath) as! TodoListCollectionViewCell
         
         let list = ListType.allCases[indexPath.item]
-        cell.bind(image: list.asImage(), imageColor: list.imageColor, count: 0, title: list.rawValue)
+        cell.bind(image: list.asImage(), imageColor: list.imageColor, count: list.totalCount, title: list.title)
         
         return cell
     }

@@ -27,6 +27,8 @@ class NewTodoViewController: BaseViewController {
             tableView.reloadData()
         }
     }
+    
+    var addHandler: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +59,7 @@ class NewTodoViewController: BaseViewController {
             realm.add(todo)
         }
         
+        addHandler?()
         dismiss(animated: true)
     }
     
