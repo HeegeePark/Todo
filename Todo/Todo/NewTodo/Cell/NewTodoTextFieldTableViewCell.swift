@@ -11,7 +11,7 @@ protocol TextFieldCellDelegate: AnyObject {
     func didEditTodoText(_ newText: String, at index: Int)
 }
 
-class NewTodoTextFieldTableViewCell: UITableViewCell {
+class NewTodoTextFieldTableViewCell: BaseTableViewCell {
     lazy var textField: UITextField = {
         let tf = UITextField()
         tf.font = .systemFont(ofSize: 13)
@@ -27,14 +27,6 @@ class NewTodoTextFieldTableViewCell: UITableViewCell {
         }
     }
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        configureHierarchy()
-        configureLayout()
-        configureView()
-    }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -43,17 +35,17 @@ class NewTodoTextFieldTableViewCell: UITableViewCell {
         delegate?.didEditTodoText(textField.text ?? "", at: textField.tag)
     }
     
-    func configureHierarchy() {
+    override func configureHierarchy() {
         contentView.addSubview(textField)
     }
     
-    func configureLayout() {
+    override func configureLayout() {
         textField.snp.makeConstraints { make in
             make.edges.equalTo(contentView.safeAreaLayoutGuide).inset(16)
         }
     }
     
-    func configureView() {
+    override func configureView() {
     }
     
     func configure(index: Int, placeholder: String) {
