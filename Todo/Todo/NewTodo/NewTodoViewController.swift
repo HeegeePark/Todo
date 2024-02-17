@@ -39,18 +39,23 @@ class NewTodoViewController: BaseViewController {
     func configureNavigationBar() {
         navigationItem.title = "새로운 할 일"
         
-        let leftItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(leftBarButtonClicked))
-        navigationItem.leftBarButtonItem = leftItem
+        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelButtonClicked))
+        navigationItem.leftBarButtonItem = cancelButton
         
-        let rightItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(rightBarButtonClicked))
-        navigationItem.rightBarButtonItem = rightItem
+        let addButton = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonClicked))
+        navigationItem.rightBarButtonItem = addButton
     }
     
-    @objc func leftBarButtonClicked() {
+    @objc func cancelButtonClicked() {
         dismiss(animated: true)
     }
     
-    @objc func rightBarButtonClicked() {
+    @objc func addButtonClicked() {
+        guard isFilledInTitle() else {
+            showToast("제목 입력은 필수입니다. 🙏")
+            return
+        }
+        
         let realm = try! Realm()
         
         let todo = asTodoModel()
@@ -61,6 +66,10 @@ class NewTodoViewController: BaseViewController {
         
         addHandler?()
         dismiss(animated: true)
+    }
+    
+    func isFilledInTitle() -> Bool {
+        return !content.first!.isEmpty
     }
     
     func asTodoModel() -> TodoModel {

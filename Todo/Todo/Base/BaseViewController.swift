@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Toast
 
 class BaseViewController: UIViewController {
 
@@ -26,5 +27,9 @@ class BaseViewController: UIViewController {
     
     func configureView() {
         view.backgroundColor = .systemBackground
+    }
+    
+    func showToast(_ message: String) {
+        view.makeToast(message, duration: 3, position: .center)
     }
 }
