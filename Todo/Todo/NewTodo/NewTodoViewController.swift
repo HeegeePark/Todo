@@ -134,7 +134,6 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NewTodoSubTitleStyleTableViewCell
-            cell.selectionStyle = .none
             
             cell.textLabel?.text = TodoType[indexPath]
             cell.textLabel?.font = .systemFont(ofSize: 13)
