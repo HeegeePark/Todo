@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TodoSubTitleStyleTableViewCell: UITableViewCell {
+class NewTodoSubTitleStyleTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)

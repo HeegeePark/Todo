@@ -100,8 +100,8 @@ class NewTodoViewController: BaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.sectionHeaderHeight = 0
-        tableView.register(TodoSubTitleStyleTableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.register(TodoTextFieldTableViewCell.self, forCellReuseIdentifier: "tfCell")
+        tableView.register(NewTodoSubTitleStyleTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(NewTodoTextFieldTableViewCell.self, forCellReuseIdentifier: "tfCell")
     }
 
 }
@@ -124,7 +124,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
         
         switch type {
         case .content:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "tfCell", for: indexPath) as! TodoTextFieldTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "tfCell", for: indexPath) as! NewTodoTextFieldTableViewCell
             cell.selectionStyle = .none
             
             cell.configure(index: indexPath.row, placeholder: TodoType[indexPath])
@@ -133,7 +133,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
             
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TodoSubTitleStyleTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NewTodoSubTitleStyleTableViewCell
             cell.selectionStyle = .none
             
             cell.textLabel?.text = TodoType[indexPath]
