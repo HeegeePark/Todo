@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class TodoListCollectionViewCell: UICollectionViewCell {
+class TodoListStatusCollectionViewCell: UICollectionViewCell {
     
     let icon = UIButton()
     let totalCountLabel = UILabel()

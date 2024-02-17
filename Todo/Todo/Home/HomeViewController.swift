@@ -21,7 +21,7 @@ class HomeViewController: BaseViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
         cv.setLayout(inset: 12, spacing: 12, ratio: 0.45, colCount: 2)
         cv.isScrollEnabled = false
-        cv.register(TodoListCollectionViewCell.self, forCellWithReuseIdentifier: "statusCell")
+        cv.register(TodoListStatusCollectionViewCell.self, forCellWithReuseIdentifier: "statusCell")
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -93,7 +93,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "statusCell", for: indexPath) as! TodoListCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "statusCell", for: indexPath) as! TodoListStatusCollectionViewCell
         
         let list = ListType.allCases[indexPath.item]
         cell.bind(image: list.asImage(), imageColor: list.imageColor, count: list.totalCount, title: list.title)
