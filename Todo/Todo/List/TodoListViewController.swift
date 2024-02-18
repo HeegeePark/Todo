@@ -85,8 +85,7 @@ extension TodoListViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: TodoListTableViewCell.identifier, for: indexPath) as! TodoListTableViewCell
         
         let row = todoList[indexPath.row]
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = row.dataToShow()
+        cell.bindTodo(model: row)
         
         return cell
     }
