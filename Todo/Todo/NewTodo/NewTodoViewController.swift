@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 protocol PassDataProtocol where Self: UIViewController {
     var passData: ((String)-> Void)? { get set }

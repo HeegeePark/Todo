@@ -26,6 +26,14 @@ class BaseRepository<T: Object> {
         return realm.objects(Model.self)
     }
     
+    func fetchSorted(_ key: String) -> Results<Model> {
+        fetch().sorted(byKeyPath: key, ascending: true)
+    }
+    
+    func fetchFiltered(key: String, value: String) -> Results<Model> {
+        return fetch().filter("\(key) == '\(value)'")
+    }
+    
     func updateItem(id: ObjectId, item: Model) {
     }
     

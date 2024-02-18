@@ -18,13 +18,15 @@ class TodoListViewController: BaseViewController {
         }
     }
     
+    let repository = TodoModelRepository()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        readRealm()
+        todoList = repository.fetch()
     }
     
     override func configureHierarchy() {
@@ -51,28 +53,18 @@ class TodoListViewController: BaseViewController {
         navigationItem.title = "Todo 리스트"
         let right = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
         
-        let action1 = UIAction(title: "마감일 순", handler: { _ in
-            let realm = try! Realm()
-            self.todoList = realm.objects(TodoModel.self).sorted(byKeyPath: "deadline", ascending: true)
+        let action1 = UIAction(title: "마감일 순", handler: { [self] _ in
+            todoList = repository.fetchSorted("deadline")
         })
-        let action2 = UIAction(title: "제목 순", handler: { _ in
-            let realm = try! Realm()
-            self.todoList = realm.objects(TodoModel.self).sorted(byKeyPath: "title", ascending: true)
+        let action2 = UIAction(title: "제목 순", handler: { [self] _ in
+            todoList = repository.fetchSorted("title")
         })
-        let action3 = UIAction(title: "우선순위 낮음", handler: { _ in
-            let realm = try! Realm()
-            self.todoList = realm.objects(TodoModel.self).where {
-                $0.priority == "low"
-            }
+        let action3 = UIAction(title: "우선순위 낮음", handler: { [self] _ in
+            todoList = repository.fetchFiltered(key: "priority", value: "low")
         })
         
         right.menu = UIMenu(title: "정렬 또는 필터링", options: .displayInline, children: [action1, action2, action3])
         navigationItem.rightBarButtonItem = right
-    }
-    
-    func readRealm() {
-        let realm = try! Realm()
-        todoList = realm.objects(TodoModel.self)
     }
 }
 
