@@ -67,6 +67,8 @@ enum ListType: String, CaseIterable {
         switch self {
         case .today:
             return ListType.repository.fetchToday()
+        case .schedule:
+            return ListType.repository.fetchSchedule()
         case .done:
             return ListType.repository.fetchCompleted()
         default:

@@ -22,6 +22,12 @@ class TodoModelRepository: BaseRepository<TodoModel> {
         }
     }
     
+    func fetchSchedule() -> Results<TodoModel> {
+        return super.fetch().where {
+            $0.deadline > Date()
+        }
+    }
+    
     func updateCheck(item: TodoModel) {
         do {
             try realm.write {

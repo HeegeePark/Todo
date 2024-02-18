@@ -105,15 +105,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let type = ListType.allCases[indexPath.item]
         
         switch type {
-        case .today:
-            let vc = TodoListViewController(type: type)
-            navigationController?.pushViewController(vc, animated: true)
-            
-        case .done:
-            let vc = TodoListViewController(type: type)
+        case .flag:
+            let vc = TodoListViewController(type: .all)
             navigationController?.pushViewController(vc, animated: true)
         default:
-            let vc = TodoListViewController(type: .all)
+            let vc = TodoListViewController(type: type)
             navigationController?.pushViewController(vc, animated: true)
         }
     }
