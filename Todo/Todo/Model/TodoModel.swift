@@ -28,20 +28,4 @@ class TodoModel: Object {
         self.priority = priority
         self.image = image
     }
-    
-    func dataToShow() -> String {
-        var data = title + "\n"
-        
-        for value in [memo, tag, priority, image] {
-            if let value {
-                data += value + "\n"
-            }
-        }
-        
-        if let deadline {
-            data += DateManager.shared.toString(date: deadline)
-        }
-        
-        return data
-    }
 }

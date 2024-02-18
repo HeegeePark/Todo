@@ -12,7 +12,7 @@ class DateViewController: BaseViewController, PassDataProtocol {
     let datePicker = UIDatePicker()
     
     var selectedDate: String {
-        return DateManager.shared.toString(date: datePicker.date)
+        return DateManager.shared.toString(date: datePicker.date, format: "yyyy년 M월 dd일 a HH:mm")
     }
     
     var passData: ((String) -> Void)?

@@ -65,6 +65,8 @@ enum ListType: String, CaseIterable {
     var todoList: Results<TodoModel> {
         // TODO: 나머지 타입들도 맞게 필터링하기
         switch self {
+        case .today:
+            return ListType.repository.fetchToday()
         case .done:
             return ListType.repository.fetchCompleted()
         default:

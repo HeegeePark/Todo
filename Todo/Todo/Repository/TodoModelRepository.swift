@@ -15,6 +15,13 @@ class TodoModelRepository: BaseRepository<TodoModel> {
         return super.fetch().filter("isDone == true")
     }
     
+    func fetchToday() -> Results<TodoModel> {
+        let (start, end) = DateManager.shared.todayDateRange()
+        return super.fetch().where {
+            $0.deadline.contains(start...end)
+        }
+    }
+    
     func updateCheck(item: TodoModel) {
         do {
             try realm.write {

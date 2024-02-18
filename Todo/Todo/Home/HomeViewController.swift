@@ -102,10 +102,17 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if ListType.allCases[indexPath.item] == .done {
-            let vc = TodoListViewController(type: .done)
+        let type = ListType.allCases[indexPath.item]
+        
+        switch type {
+        case .today:
+            let vc = TodoListViewController(type: type)
             navigationController?.pushViewController(vc, animated: true)
-        } else {
+            
+        case .done:
+            let vc = TodoListViewController(type: type)
+            navigationController?.pushViewController(vc, animated: true)
+        default:
             let vc = TodoListViewController(type: .all)
             navigationController?.pushViewController(vc, animated: true)
         }

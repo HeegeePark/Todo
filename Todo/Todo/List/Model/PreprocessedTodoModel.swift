@@ -24,7 +24,7 @@ struct PreprocessedTodoModel {
     
     private func deadlineToString() -> String? {
         guard let deadline = model.deadline else { return nil }
-        return DateManager.shared.toString(date: deadline)
+        return DateManager.shared.toString(date: deadline, format: "yyyy. M. dd. ")
     }
     
     private func priorityToBang() -> String? {
