@@ -9,4 +9,15 @@ import Foundation
 import RealmSwift
 
 class TodoModelRepository: BaseRepository<TodoModel> {
+    private let realm = try! Realm()
+    
+    func updateCheck(item: TodoModel) {
+        do {
+            try realm.write {
+                item.isDone.toggle()
+            }
+        } catch {
+            print(error)
+        }
+    }
 }

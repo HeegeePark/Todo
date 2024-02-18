@@ -26,6 +26,8 @@ class TodoListTableViewCell: BaseTableViewCell {
         }
     }
     
+    var checkButtonTapHandler: ((Bool) -> Void)?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
@@ -47,8 +49,8 @@ class TodoListTableViewCell: BaseTableViewCell {
     }
     
     @objc private func checkButtonTapped() {
-        // TODO: handler로 Realm에도 반영
         isDone.toggle()
+        checkButtonTapHandler?(isDone)
     }
     
     private func configureCheckButton() {

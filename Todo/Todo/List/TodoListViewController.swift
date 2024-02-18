@@ -79,6 +79,10 @@ extension TodoListViewController: UITableViewDelegate, UITableViewDataSource {
         let row = todoList[indexPath.row]
         cell.bindTodo(model: row)
         
+        cell.checkButtonTapHandler = { isDone in
+            self.repository.updateCheck(item: row)
+        }
+        
         return cell
     }
 }
