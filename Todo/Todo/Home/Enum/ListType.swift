@@ -15,6 +15,8 @@ enum ListType: String, CaseIterable {
     case flag
     case done
     
+    static let repository = TodoModelRepository()
+    
     var title: String {
         switch self {
         case .today:
@@ -60,18 +62,18 @@ enum ListType: String, CaseIterable {
         }
     }
     
-    var totalCount: Int {
-        let realm = try! Realm()
+    var todoList: Results<TodoModel> {
+        // TODO: 나머지 타입들도 맞게 필터링하기
         switch self {
-        case .all:
-            let todos = realm.objects(TodoModel.self)
-            return todos.count
+        case .done:
+            return ListType.repository.fetchCompleted()
         default:
-            let todos = realm.objects(TodoModel.self).where {
-                $0.tag == rawValue
-            }
-            return todos.count
+            return ListType.repository.fetch()
         }
+    }
+    
+    var totalCount: Int {
+        return todoList.count
     }
 }
 

@@ -11,6 +11,10 @@ import RealmSwift
 class TodoModelRepository: BaseRepository<TodoModel> {
     private let realm = try! Realm()
     
+    func fetchCompleted() -> Results<TodoModel> {
+        return super.fetch().filter("isDone == true")
+    }
+    
     func updateCheck(item: TodoModel) {
         do {
             try realm.write {

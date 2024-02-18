@@ -8,8 +8,11 @@
 import UIKit
 import RealmSwift
 
-class TodoListViewController: BaseViewController {
-    
+protocol TodoListFetchable where Self: UIViewController {
+    var type: ListType { get }
+}
+
+class TodoListViewController: BaseViewController, TodoListFetchable {
     let tableView = UITableView()
     
     var todoList: Results<TodoModel>! {
@@ -20,13 +23,24 @@ class TodoListViewController: BaseViewController {
     
     let repository = TodoModelRepository()
     
+    var type: ListType
+    
+    init(type: ListType) {
+        self.type = type
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        todoList = repository.fetch()
+        todoList = type.todoList
     }
     
     override func configureHierarchy() {
@@ -50,17 +64,20 @@ class TodoListViewController: BaseViewController {
     }
     
     func configureNavigationBar() {
-        navigationItem.title = "Todo 리스트"
+        navigationItem.title = type.title
         let right = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: nil)
         
         let action1 = UIAction(title: "마감일 순", handler: { [self] _ in
-            todoList = repository.fetchSorted("deadline")
+            let results = type.todoList
+            todoList = repository.fetchSorted(results: results, "deadline")
         })
         let action2 = UIAction(title: "제목 순", handler: { [self] _ in
-            todoList = repository.fetchSorted("title")
+            let results = type.todoList
+            todoList = repository.fetchSorted(results: results, "title")
         })
         let action3 = UIAction(title: "우선순위 낮음", handler: { [self] _ in
-            todoList = repository.fetchFiltered(key: "priority", value: "low")
+            let results = type.todoList
+            todoList = repository.fetchFiltered(results: results, key: "priority", value: "low")
         })
         
         right.menu = UIMenu(title: "정렬 또는 필터링", options: .displayInline, children: [action1, action2, action3])
