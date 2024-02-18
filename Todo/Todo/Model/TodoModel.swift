@@ -11,6 +11,7 @@ import RealmSwift
 class TodoModel: Object {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var title: String   // 제목
+    @Persisted var isDone: Bool   // 완료여부
     @Persisted var memo: String? // 한줄메모(옵션)
     @Persisted var deadline: Date? // 마감일
     @Persisted var tag: String? // 태그
@@ -20,6 +21,7 @@ class TodoModel: Object {
     convenience init(title: String, memo: String? = nil, deadline: Date? = nil, tag: String? = nil, priority: String? = nil, image: String? = nil) {
         self.init()
         self.title = title
+        self.isDone = false
         self.memo = memo
         self.deadline = deadline
         self.tag = tag
