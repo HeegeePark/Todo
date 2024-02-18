@@ -12,7 +12,7 @@ class BaseRepository<T: Object> {
     typealias Model = T
     private let realm = try! Realm()
     
-    func createItem(_ item: T) {
+    func createItem(_ item: Model) {
         do {
             try realm.write {
                 realm.add(item)

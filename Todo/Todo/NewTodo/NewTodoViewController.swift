@@ -29,6 +29,8 @@ class NewTodoViewController: BaseViewController {
     }
     
     var addHandler: (() -> Void)?
+    
+    let repository = TodoModelRepository()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,13 +58,8 @@ class NewTodoViewController: BaseViewController {
             return
         }
         
-        let realm = try! Realm()
-        
         let todo = asTodoModel()
-        
-        try! realm.write {
-            realm.add(todo)
-        }
+        repository.createItem(todo)
         
         addHandler?()
         dismiss(animated: true)
