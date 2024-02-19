@@ -32,4 +32,17 @@ class BaseViewController: UIViewController {
     func showToast(_ message: String) {
         view.makeToast(message, duration: 3, position: .center)
     }
+    
+    func presentAlert(title: String, message: String? = nil, actions: UIAlertAction...) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(cancel)
+        for action in actions {
+            alert.addAction(action)
+        }
+        
+        present(alert, animated: true)
+    }
 }
