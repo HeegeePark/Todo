@@ -27,6 +27,7 @@ class TodoViewController: BaseViewController {
         }
     }
     
+    var deleteButtonTapHandler: (() -> Void)?
     var doneButtonTapHandler: (() -> Void)?
     
     let repository = TodoModelRepository()
@@ -86,12 +87,29 @@ class TodoViewController: BaseViewController {
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelButtonClicked))
         navigationItem.leftBarButtonItem = cancelButton
         
+        let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteButtonClicked))
+        deleteButton.tintColor = .systemRed
+        
         let doneButton = UIBarButtonItem(title: editType.doneButtonTitle, style: .plain, target: self, action: #selector(doneButtonClicked))
-        navigationItem.rightBarButtonItem = doneButton
+        
+        switch editType {
+        case .create:
+            navigationItem.rightBarButtonItem = doneButton
+        case .update(_):
+            navigationItem.rightBarButtonItems = [doneButton, deleteButton]
+        }
     }
     
     @objc func cancelButtonClicked() {
         dismiss(animated: true)
+    }
+    
+    @objc func deleteButtonClicked() {
+        let ok = UIAlertAction(title: "삭제", style: .default) { _ in
+            self.deleteButtonTapHandler?()
+            self.dismiss(animated: true)
+        }
+        presentAlert(title: "할 일 삭제하기", message: "정말 할 일을 삭제하시겠습니까?", actions: ok)
     }
     
     @objc func doneButtonClicked() {

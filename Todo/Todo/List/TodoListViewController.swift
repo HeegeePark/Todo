@@ -107,6 +107,11 @@ extension TodoListViewController: UITableViewDelegate, UITableViewDataSource {
         let row = todoList[indexPath.row]
         let vc = TodoViewController(editType: .update(todo: row))
         
+        vc.deleteButtonTapHandler = {
+            self.repository.deleteItem(object: row)
+            self.tableView.reloadData()
+        }
+        
         vc.doneButtonTapHandler = {
             self.tableView.reloadData()
         }
