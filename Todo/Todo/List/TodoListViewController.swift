@@ -103,6 +103,17 @@ extension TodoListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = todoList[indexPath.row]
+        let vc = TodoViewController(editType: .update(todo: row))
+        
+        vc.doneButtonTapHandler = {
+            self.tableView.reloadData()
+        }
+        
+        present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let flag = UIContextualAction(style: .normal, title: "flag") { action, view, completion in
             let row = self.todoList[indexPath.row]

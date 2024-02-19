@@ -32,6 +32,26 @@ class TodoModelRepository: BaseRepository<TodoModel> {
         return super.fetch().filter("isFlag == true")
     }
     
+    override func updateItem(id: ObjectId, updated: BaseRepository<TodoModel>.Model) {
+        do {
+            try realm.write {
+                realm.create(TodoModel.self,
+                             value: [
+                                "id": id,
+                                "title": updated.title,
+                                "memo": updated.memo,
+                                "deadline": updated.deadline,
+                                "tag": updated.tag,
+                                "priority": updated.priority,
+                                "image": updated.image,
+                                ],
+                             update: .modified)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateCheck(item: TodoModel) {
         do {
             try realm.write {

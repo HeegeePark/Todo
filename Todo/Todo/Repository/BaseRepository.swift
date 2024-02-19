@@ -34,7 +34,7 @@ class BaseRepository<T: Object> {
         return results.filter("\(key) == '\(value)'")
     }
     
-    func updateItem(id: ObjectId, item: Model) {
+    func updateItem(id: ObjectId, updated: Model) {
     }
     
     func deleteItem(object: ObjectBase) {

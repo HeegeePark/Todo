@@ -1,5 +1,5 @@
 //
-//  NewTodoViewController.swift
+//  TodoViewController.swift
 //  Todo
 //
 //  Created by 박희지 on 2/14/24.
@@ -27,40 +27,90 @@ class TodoViewController: BaseViewController {
         }
     }
     
-    var addHandler: (() -> Void)?
+    var doneButtonTapHandler: (() -> Void)?
     
     let repository = TodoModelRepository()
-
+    
+    let editType: TodoEditType
+    
+    init(editType: TodoEditType) {
+        self.editType = editType
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureNavigationBar()
+        bindIfUpdateMode()
+    }
+    
+    func bindIfUpdateMode() {
+        switch editType {
+        case .create:
+            return
+        case .update(let todo):
+            content[0] = todo.title
+            
+            if let memo = todo.memo {
+                content[1] = memo
+            }
+            
+            if let deadline = todo.deadline {
+                let toString = DateManager.shared.toString(date: deadline, format: "yyyy년 MM월 dd일")
+                fromPassData[1] = toString
+            }
+            
+            if let tag = todo.tag {
+                fromPassData[2] = tag
+            }
+            
+            if let priority = todo.priority {
+                fromPassData[3] = priority
+            }
+            
+            if let image = todo.image {
+                // TODO: UIImage 띄우기로 바꾸기
+                fromPassData[4] = image
+            }
+        }
     }
     
     func configureNavigationBar() {
-        navigationItem.title = "새로운 할 일"
+        navigationItem.title = editType.title
         
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelButtonClicked))
         navigationItem.leftBarButtonItem = cancelButton
         
-        let addButton = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonClicked))
-        navigationItem.rightBarButtonItem = addButton
+        let doneButton = UIBarButtonItem(title: editType.doneButtonTitle, style: .plain, target: self, action: #selector(doneButtonClicked))
+        navigationItem.rightBarButtonItem = doneButton
     }
     
     @objc func cancelButtonClicked() {
         dismiss(animated: true)
     }
     
-    @objc func addButtonClicked() {
+    @objc func doneButtonClicked() {
         guard isFilledInTitle() else {
             showToast("제목 입력은 필수입니다. 🙏")
             return
         }
         
-        let todo = asTodoModel()
-        repository.createItem(todo)
+        switch editType {
+        case .create:
+            let todo = asTodoModel()
+            repository.createItem(todo)
+            
+        case .update(let todo):
+            let updated = asTodoModel()
+            repository.updateItem(id: todo.id, updated: updated)
+        }
         
-        addHandler?()
+        doneButtonTapHandler?()
         dismiss(animated: true)
     }
     
