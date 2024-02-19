@@ -1,5 +1,5 @@
 //
-//  TodoCell.swift
+//  TodoSubTitleStyleTableViewCell.swift
 //  Todo
 //
 //  Created by 박희지 on 2/15/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewTodoSubTitleStyleTableViewCell: UITableViewCell {
+class TodoSubTitleStyleTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)

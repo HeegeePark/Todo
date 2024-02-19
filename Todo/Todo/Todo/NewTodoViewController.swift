@@ -11,7 +11,7 @@ protocol PassDataProtocol where Self: UIViewController {
     var passData: ((String)-> Void)? { get set }
 }
 
-class NewTodoViewController: BaseViewController {
+class TodoViewController: BaseViewController {
     
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
@@ -96,13 +96,13 @@ class NewTodoViewController: BaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.sectionHeaderHeight = 0
-        tableView.register(NewTodoSubTitleStyleTableViewCell.self, forCellReuseIdentifier: NewTodoSubTitleStyleTableViewCell.identifier)
-        tableView.register(NewTodoTextFieldTableViewCell.self, forCellReuseIdentifier: NewTodoTextFieldTableViewCell.identifier)
+        tableView.register(TodoSubTitleStyleTableViewCell.self, forCellReuseIdentifier: TodoSubTitleStyleTableViewCell.identifier)
+        tableView.register(TodoTextFieldTableViewCell.self, forCellReuseIdentifier: TodoTextFieldTableViewCell.identifier)
     }
 
 }
 
-extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
+extension TodoViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return TodoType.allCases.count
     }
@@ -120,7 +120,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
         
         switch type {
         case .content:
-            let cell = tableView.dequeueReusableCell(withIdentifier: NewTodoTextFieldTableViewCell.identifier, for: indexPath) as! NewTodoTextFieldTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: TodoTextFieldTableViewCell.identifier, for: indexPath) as! TodoTextFieldTableViewCell
             cell.selectionStyle = .none
             
             cell.configure(index: indexPath.row, placeholder: TodoType[indexPath])
@@ -129,7 +129,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
             
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: NewTodoSubTitleStyleTableViewCell.identifier, for: indexPath) as! NewTodoSubTitleStyleTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: TodoSubTitleStyleTableViewCell.identifier, for: indexPath) as! TodoSubTitleStyleTableViewCell
             
             cell.textLabel?.text = TodoType[indexPath]
             cell.textLabel?.font = .systemFont(ofSize: 13)
@@ -158,7 +158,7 @@ extension NewTodoViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension NewTodoViewController: TextFieldCellDelegate {
+extension TodoViewController: TextFieldCellDelegate {
     func didEditTodoText(_ newText: String, at index: Int) {
         content[index] = newText
     }

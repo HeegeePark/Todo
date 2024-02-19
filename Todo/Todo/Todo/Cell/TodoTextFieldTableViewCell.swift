@@ -11,7 +11,7 @@ protocol TextFieldCellDelegate: AnyObject {
     func didEditTodoText(_ newText: String, at index: Int)
 }
 
-class NewTodoTextFieldTableViewCell: BaseTableViewCell {
+class TodoTextFieldTableViewCell: BaseTableViewCell {
     lazy var textField: UITextField = {
         let tf = UITextField()
         tf.font = .systemFont(ofSize: 13)

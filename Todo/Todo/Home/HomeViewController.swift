@@ -76,7 +76,7 @@ class HomeViewController: BaseViewController {
     }
     
     @objc func newTodoButtonClicked() {
-        let vc = NewTodoViewController()
+        let vc = TodoViewController()
         
         vc.addHandler = {
             self.collectionView.reloadData()
