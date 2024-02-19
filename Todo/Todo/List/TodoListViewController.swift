@@ -103,6 +103,19 @@ extension TodoListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let flag = UIContextualAction(style: .normal, title: "flag") { action, view, completion in
+            let row = self.todoList[indexPath.row]
+            self.repository.updateFlag(item: row)
+            self.tableView.reloadData()
+            completion(true)
+        }
+        flag.backgroundColor = .systemYellow
+        flag.image = UIImage(systemName: "flag.fill")
+        
+        return UISwipeActionsConfiguration(actions: [flag])
+    }
+        
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let row = todoList[indexPath.row]

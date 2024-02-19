@@ -28,10 +28,24 @@ class TodoModelRepository: BaseRepository<TodoModel> {
         }
     }
     
+    func fetchFlag() -> Results<TodoModel> {
+        return super.fetch().filter("isFlag == true")
+    }
+    
     func updateCheck(item: TodoModel) {
         do {
             try realm.write {
                 item.isDone.toggle()
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func updateFlag(item: TodoModel) {
+        do {
+            try realm.write {
+                item.isFlag.toggle()
             }
         } catch {
             print(error)

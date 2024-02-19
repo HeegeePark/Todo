@@ -69,10 +69,12 @@ enum ListType: String, CaseIterable {
             return ListType.repository.fetchToday()
         case .schedule:
             return ListType.repository.fetchSchedule()
+        case .all:
+            return ListType.repository.fetch()
+        case .flag:
+            return ListType.repository.fetchFlag()
         case .done:
             return ListType.repository.fetchCompleted()
-        default:
-            return ListType.repository.fetch()
         }
     }
     

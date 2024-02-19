@@ -104,13 +104,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let type = ListType.allCases[indexPath.item]
         
-        switch type {
-        case .flag:
-            let vc = TodoListViewController(type: .all)
-            navigationController?.pushViewController(vc, animated: true)
-        default:
-            let vc = TodoListViewController(type: type)
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        let vc = TodoListViewController(type: type)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
