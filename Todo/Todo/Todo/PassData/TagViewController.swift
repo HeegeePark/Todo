@@ -10,7 +10,7 @@ import UIKit
 class TagViewController: BaseViewController, PassDataProtocol {
     let tagTextField = UITextField()
     
-    var passData: ((String) -> Void)?
+    var passData: ((Any) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

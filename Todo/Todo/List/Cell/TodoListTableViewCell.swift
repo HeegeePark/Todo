@@ -19,6 +19,7 @@ class TodoListTableViewCell: BaseTableViewCell {
     private let thirdLineHorizontalStackView = UIStackView()
     private let deadLineLabel = UILabel()
     private let tagLabel = UILabel()
+    private let subImageView = UIImageView()
     
     var isDone: Bool = false {
         didSet {
@@ -46,6 +47,10 @@ class TodoListTableViewCell: BaseTableViewCell {
         configureOptionalData(memoLabel, data: preprocessed.memo)
         configureOptionalData(deadLineLabel, data: preprocessed.deadline)
         configureOptionalData(tagLabel, data: preprocessed.tag)
+        
+        if let image = ImageManager.shared.loadImageFromDocument(filename: "\(model.id)") {
+            subImageView.image = image
+        }
     }
     
     @objc private func checkButtonTapped() {
@@ -74,7 +79,7 @@ class TodoListTableViewCell: BaseTableViewCell {
     }
     
     override func configureHierarchy() {
-        contentView.addSubViews(checkButton, stackView)
+        contentView.addSubViews(checkButton, stackView, subImageView)
         stackView.addArrangedSubViews(firstLineHorizontalStackView, memoLabel, thirdLineHorizontalStackView)
         firstLineHorizontalStackView.addArrangedSubViews(priorityLabel, titleLabel)
         thirdLineHorizontalStackView.addArrangedSubViews(deadLineLabel, tagLabel)
@@ -88,7 +93,7 @@ class TodoListTableViewCell: BaseTableViewCell {
         }
         
         stackView.snp.makeConstraints { make in
-            make.top.trailing.bottom.equalTo(contentView)
+            make.verticalEdges.equalTo(contentView)
             make.leading.equalTo(checkButton.snp.trailing)
         }
         
@@ -119,6 +124,11 @@ class TodoListTableViewCell: BaseTableViewCell {
         
         tagLabel.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview()
+        }
+        
+        subImageView.snp.makeConstraints { make in
+            make.trailing.verticalEdges.equalTo(contentView).inset(10)
+            make.width.equalTo(30)
         }
     }
     
@@ -156,5 +166,7 @@ class TodoListTableViewCell: BaseTableViewCell {
         
         tagLabel.font = .systemFont(ofSize: 13)
         tagLabel.textColor = .systemBlue
+        
+        subImageView.contentMode = .scaleAspectFill
     }
 }

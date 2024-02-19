@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PassDataProtocol where Self: UIViewController {
-    var passData: ((String)-> Void)? { get set }
+    var passData: ((Any)-> Void)? { get set }
 }
 
 class TodoViewController: BaseViewController {
@@ -26,6 +26,8 @@ class TodoViewController: BaseViewController {
             tableView.reloadData()
         }
     }
+    
+    var selectedImage: UIImage?
     
     var deleteButtonTapHandler: (() -> Void)?
     var doneButtonTapHandler: (() -> Void)?
@@ -123,6 +125,10 @@ class TodoViewController: BaseViewController {
             let todo = asTodoModel()
             repository.createItem(todo)
             
+            if let selectedImage {
+                ImageManager.shared.saveImageToDocument(image: selectedImage, filename: "\(todo.id)")
+            }
+            
         case .update(let todo):
             let updated = asTodoModel()
             repository.updateItem(id: todo.id, updated: updated)
@@ -140,6 +146,7 @@ class TodoViewController: BaseViewController {
         let combined: [String?] = (content + fromPassData[1...]).map {
             $0.isEmpty ? nil: $0
         }
+        
         return TodoModel(title: combined[0]!,
                          memo: combined[1],
                          deadline: DateManager.shared.toDate(string: combined[2] ?? ""),
@@ -196,12 +203,24 @@ extension TodoViewController: UITableViewDataSource, UITableViewDelegate {
             cell.delegate = self
             
             return cell
+        case .image:
+            let cell = tableView.dequeueReusableCell(withIdentifier: TodoSubTitleStyleTableViewCell.identifier, for: indexPath) as! TodoSubTitleStyleTableViewCell
+            
+            cell.textLabel?.text = TodoType[indexPath]
+            cell.textLabel?.font = .systemFont(ofSize: 13)
+            cell.textLabel?.textColor = .white
+            if let selectedImage {
+                cell.imageView?.image = selectedImage
+            }
+            cell.accessoryType = .disclosureIndicator
+            return cell
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: TodoSubTitleStyleTableViewCell.identifier, for: indexPath) as! TodoSubTitleStyleTableViewCell
             
             cell.textLabel?.text = TodoType[indexPath]
             cell.textLabel?.font = .systemFont(ofSize: 13)
             cell.textLabel?.textColor = .white
+            cell.imageView?.image = nil
             cell.detailTextLabel?.text = fromPassData[indexPath.section]
             cell.accessoryType = .disclosureIndicator
             return cell
@@ -214,11 +233,20 @@ extension TodoViewController: UITableViewDataSource, UITableViewDelegate {
         switch type {
         case .content:
             break
+        case .image:
+            let vc = type.nextToPush!
+        
+            vc.passData = { data in
+                self.selectedImage = data as? UIImage
+                self.fromPassData[indexPath.section] = "image exist"
+            }
+            
+            navigationController?.pushViewController(vc, animated: true)
         default:
             let vc = type.nextToPush!
-            
+        
             vc.passData = { data in
-                self.fromPassData[indexPath.section] = data
+                self.fromPassData[indexPath.section] = data as! String
             }
             
             navigationController?.pushViewController(vc, animated: true)

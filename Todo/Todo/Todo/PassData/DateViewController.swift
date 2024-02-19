@@ -15,7 +15,7 @@ class DateViewController: BaseViewController, PassDataProtocol {
         return DateManager.shared.toString(date: datePicker.date, format: "yyyy년 M월 dd일 a HH:mm")
     }
     
-    var passData: ((String) -> Void)?
+    var passData: ((Any) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

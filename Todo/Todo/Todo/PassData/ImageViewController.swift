@@ -8,15 +8,14 @@
 import UIKit
 
 class ImageViewController: BaseViewController, PassDataProtocol {
+    let imageView = UIImageView()
+    let addImageButton = UIButton()
     
-    let imageStrings = ["🌟", "❤️", "🔥", "💻"]
-    lazy var segmentedControl = UISegmentedControl(items: imageStrings)
-    
-    var selectedPriority: String {
-        return imageStrings[segmentedControl.selectedSegmentIndex]
+    var selectedImage: UIImage {
+        return imageView.image!
     }
     
-    var passData: ((String) -> Void)?
+    var passData: ((Any) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,22 +24,60 @@ class ImageViewController: BaseViewController, PassDataProtocol {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        passData?(selectedPriority)
+        if let image = imageView.image {
+            passData?(image)
+        }
+    }
+    
+    @objc func addImageButtonClicked() {
+        let vc = UIImagePickerController()
+        vc.allowsEditing = true
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     override func configureHierarchy() {
-        view.addSubview(segmentedControl)
+        view.addSubview(imageView)
+        view.addSubview(addImageButton)
     }
     
     override func configureLayout() {
-        segmentedControl.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+        imageView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.size.equalTo(200)
+        }
+        
+        addImageButton.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(50)
+            make.width.equalTo(200)
         }
     }
     
     override func configureView() {
         super.configureView()
-        segmentedControl.selectedSegmentIndex = 0
+        
+        imageView.contentMode = .scaleAspectFill
+        addImageButton.backgroundColor = .darkGray
+        addImageButton.setTitle("사진 추가", for: .normal)
+        addImageButton.addTarget(self, action: #selector(addImageButtonClicked), for: .touchUpInside)
+    }
+}
+
+extension ImageViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            imageView.image = pickedImage
+        }
+        
+        dismiss(animated: true)
     }
 }

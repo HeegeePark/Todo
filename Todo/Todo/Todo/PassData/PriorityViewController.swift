@@ -16,7 +16,7 @@ class PriorityViewController: BaseViewController, PassDataProtocol {
         return priority[segmentedControl.selectedSegmentIndex]
     }
     
-    var passData: ((String) -> Void)?
+    var passData: ((Any) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
