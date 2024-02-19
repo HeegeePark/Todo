@@ -102,4 +102,12 @@ extension TodoListViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let row = todoList[indexPath.row]
+            repository.deleteItem(object: row)
+            tableView.reloadData()
+        }
+    }
 }
