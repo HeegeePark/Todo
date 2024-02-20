@@ -95,6 +95,7 @@ class TodoListTableViewCell: BaseTableViewCell {
         stackView.snp.makeConstraints { make in
             make.verticalEdges.equalTo(contentView)
             make.leading.equalTo(checkButton.snp.trailing)
+            make.trailing.equalTo(subImageView.snp.leading)
         }
         
         priorityLabel.snp.makeConstraints { make in

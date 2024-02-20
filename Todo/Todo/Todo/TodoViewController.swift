@@ -210,7 +210,7 @@ extension TodoViewController: UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.font = .systemFont(ofSize: 13)
             cell.textLabel?.textColor = .white
             if let selectedImage {
-                cell.imageView?.image = selectedImage
+                cell.imageView.image = selectedImage
             }
             cell.accessoryType = .disclosureIndicator
             return cell
@@ -220,7 +220,7 @@ extension TodoViewController: UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.text = TodoType[indexPath]
             cell.textLabel?.font = .systemFont(ofSize: 13)
             cell.textLabel?.textColor = .white
-            cell.imageView?.image = nil
+            cell.imageView.image = nil
             cell.detailTextLabel?.text = fromPassData[indexPath.section]
             cell.accessoryType = .disclosureIndicator
             return cell

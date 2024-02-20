@@ -51,7 +51,7 @@ enum TodoType: String, CaseIterable {
 
 extension TodoType {
     static func rowHeight(indexPath: IndexPath) -> CGFloat {
-        return indexPath == [0, 1] ? 100: UITableView.automaticDimension
+        return indexPath == [0, 1] ? 100: 50
     }
     
     static subscript(indexPath: IndexPath) -> String {
