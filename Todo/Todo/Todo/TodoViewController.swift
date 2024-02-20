@@ -27,7 +27,11 @@ class TodoViewController: BaseViewController {
         }
     }
     
-    var selectedImage: UIImage?
+    var selectedImage: UIImage? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     var deleteButtonTapHandler: (() -> Void)?
     var doneButtonTapHandler: (() -> Void)?
@@ -78,7 +82,7 @@ class TodoViewController: BaseViewController {
             
             if let image = todo.image {
                 // TODO: UIImage 띄우기로 바꾸기
-                fromPassData[4] = image
+                selectedImage = ImageManager.shared.loadImageFromDocument(filename: "\(todo.id)")
             }
         }
     }
