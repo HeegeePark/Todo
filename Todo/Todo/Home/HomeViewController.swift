@@ -69,13 +69,23 @@ class HomeViewController: BaseViewController {
         
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
-        // TODO: title 뜨게 고치기
-        let newTodo = UIBarButtonItem(title: "새로운 할 일", image: UIImage(systemName: "plus.circle.fill"), target: self, action: #selector(newTodoButtonClicked))
+        let newButton: UIButton = {
+            var config = UIButton.Configuration.plain()
+            config.imagePadding = 8
+            let action = UIAction(title: "새로운 할 일", image: UIImage(systemName: "plus.circle.fill")) { _ in
+                self.newTodoButtonClicked()
+            }
+            let button = UIButton(configuration: config, primaryAction: action)
+            return button
+        }()
+        
+        let newTodo = UIBarButtonItem(customView: newButton)
         let addList = UIBarButtonItem(title: "목록 추가", image: nil, target: self, action: nil)
         toolbarItems = [newTodo, flexibleSpace, addList]
     }
     
-    @objc func newTodoButtonClicked() {
+    private func newTodoButtonClicked() {
+        print("new todo")
         let vc = TodoViewController(editType: .create)
         
         vc.doneButtonTapHandler = {
@@ -84,6 +94,16 @@ class HomeViewController: BaseViewController {
         
         present(UINavigationController(rootViewController: vc), animated: true)
     }
+    
+//    @objc func newTodoButtonClicked() {
+//        let vc = TodoViewController(editType: .create)
+//        
+//        vc.doneButtonTapHandler = {
+//            self.collectionView.reloadData()
+//        }
+//        
+//        present(UINavigationController(rootViewController: vc), animated: true)
+//    }
 
 }
 
