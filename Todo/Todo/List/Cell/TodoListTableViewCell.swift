@@ -50,6 +50,8 @@ class TodoListTableViewCell: BaseTableViewCell {
         
         if let image = ImageManager.shared.loadImageFromDocument(filename: "\(model.id)") {
             subImageView.image = image
+        } else {
+            subImageView.image = nil
         }
     }
     
