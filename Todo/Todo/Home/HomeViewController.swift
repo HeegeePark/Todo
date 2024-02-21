@@ -26,6 +26,13 @@ class HomeViewController: BaseViewController {
         cv.dataSource = self
         return cv
     }()
+    
+    lazy var myListView: MyListView = {
+        let view = MyListView()
+        view.tableView.delegate = self
+        view.tableView.dataSource = self
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +46,7 @@ class HomeViewController: BaseViewController {
     override func configureHierarchy() {
         view.addSubview(titleLabel)
         view.addSubview(collectionView)
+        view.addSubview(myListView)
     }
     
     override func configureLayout() {
@@ -49,7 +57,12 @@ class HomeViewController: BaseViewController {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(350)
+            make.height.equalTo(300)
+        }
+        
+        myListView.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom)
+            make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -85,7 +98,6 @@ class HomeViewController: BaseViewController {
     }
     
     private func newTodoButtonClicked() {
-        print("new todo")
         let vc = TodoViewController(editType: .create)
         
         vc.doneButtonTapHandler = {
@@ -94,17 +106,6 @@ class HomeViewController: BaseViewController {
         
         present(UINavigationController(rootViewController: vc), animated: true)
     }
-    
-//    @objc func newTodoButtonClicked() {
-//        let vc = TodoViewController(editType: .create)
-//        
-//        vc.doneButtonTapHandler = {
-//            self.collectionView.reloadData()
-//        }
-//        
-//        present(UINavigationController(rootViewController: vc), animated: true)
-//    }
-
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -126,5 +127,17 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         let vc = TodoListViewController(type: type)
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: MyListTableViewCell.identifier, for: indexPath) as! MyListTableViewCell
+        
+        return cell
     }
 }
