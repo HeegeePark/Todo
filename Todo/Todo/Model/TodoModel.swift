@@ -18,6 +18,7 @@ class TodoModel: Object {
     @Persisted var priority: String? // 우선순위
     @Persisted var image: String? // 이미지
     @Persisted var isFlag: Bool   // 완료여부
+    @Persisted(originProperty: "todos") var mylist: LinkingObjects<MyListModel>
     
     convenience init(title: String, memo: String? = nil, deadline: Date? = nil, tag: String? = nil, priority: String? = nil, image: String? = nil) {
         self.init()

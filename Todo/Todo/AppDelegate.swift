@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,7 +14,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        let configuration = Realm.Configuration(schemaVersion: 1) { migration, oldSchemaVersion in
+            
+            
+            // MyListModel 테이블 추가
+            // TodoModel에 MyListModel todos 프로퍼티(렘 리스트)의 링킹 오브젝트 컬럼 추가
+            if oldSchemaVersion < 1 {
+                print("Schema version 0 -> 1")
+            }
+        }
+        
+        Realm.Configuration.defaultConfiguration = configuration
+                
+        
         return true
     }
 
