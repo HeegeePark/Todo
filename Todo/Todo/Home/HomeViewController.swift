@@ -9,6 +9,9 @@ import UIKit
 
 class HomeViewController: BaseViewController {
     
+    var scrollView = UIScrollView()
+    let contentView = UIView()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "전체"
@@ -31,6 +34,7 @@ class HomeViewController: BaseViewController {
         let view = MyListView()
         view.tableView.delegate = self
         view.tableView.dataSource = self
+        view.delegate = self
         return view
     }()
 
@@ -44,25 +48,37 @@ class HomeViewController: BaseViewController {
     }
     
     override func configureHierarchy() {
-        view.addSubview(titleLabel)
-        view.addSubview(collectionView)
-        view.addSubview(myListView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(collectionView)
+        contentView.addSubview(myListView)
     }
     
     override func configureLayout() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.centerX.top.bottom.equalToSuperview()
+        }
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(12)
+            make.top.leading.trailing.equalToSuperview().inset(12)
         }
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.equalToSuperview()
             make.height.equalTo(300)
         }
         
         myListView.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom)
-            make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(500)
+            make.horizontalEdges.bottom.equalToSuperview()
         }
     }
     
@@ -132,12 +148,23 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MyListTableViewCell.identifier, for: indexPath) as! MyListTableViewCell
+        cell.selectionStyle = .none
         
         return cell
+    }
+}
+
+extension HomeViewController: DynamicHeight {
+    func dynamicHeight(height: CGFloat) {
+        myListView.snp.remakeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom)
+            make.height.equalTo(height)
+            make.horizontalEdges.bottom.equalToSuperview()
+        }
     }
 }
