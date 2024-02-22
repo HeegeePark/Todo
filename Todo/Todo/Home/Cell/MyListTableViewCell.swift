@@ -25,6 +25,13 @@ class MyListTableViewCell: UITableViewCell {
         detailTextLabel?.font = .boldSystemFont(ofSize: 18)
         detailTextLabel?.textColor = .lightText
         imageView?.image = UIImage(systemName: "list")
+        imageView?.layer.cornerRadius = (imageView?.frame.width ?? 30) / 2
         accessoryType = .disclosureIndicator
+    }
+    
+    func bindData(mylist: MyListModel) {
+        textLabel?.text = mylist.title
+        imageView?.image = UIImage(systemName: mylist.icon)
+        detailTextLabel?.text = "\(mylist.todos.count)"
     }
 }

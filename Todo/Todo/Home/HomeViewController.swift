@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class HomeViewController: BaseViewController {
     
@@ -37,9 +38,14 @@ class HomeViewController: BaseViewController {
         view.delegate = self
         return view
     }()
+    
+    let myListRepository = MyListModelRepository()
+    
+    var myList: Results<MyListModel>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        myList = myListRepository.fetch()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -148,12 +154,13 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return myList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MyListTableViewCell.identifier, for: indexPath) as! MyListTableViewCell
         cell.selectionStyle = .none
+        
         
         return cell
     }
