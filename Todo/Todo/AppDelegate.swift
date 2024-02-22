@@ -15,12 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let configuration = Realm.Configuration(schemaVersion: 1) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 2) { migration, oldSchemaVersion in
             
             
             // MyListModel 테이블 추가
             // TodoModel에 MyListModel todos 프로퍼티(렘 리스트)의 링킹 오브젝트 컬럼 추가
             if oldSchemaVersion < 1 {
+                print("Schema version 0 -> 1")
+            }
+            
+            // MyListModel 테이블 color 컬럼 타입 변경(String -> Int)
+            if oldSchemaVersion < 2 {
                 print("Schema version 0 -> 1")
             }
         }
