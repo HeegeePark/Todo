@@ -10,7 +10,7 @@ import SnapKit
 
 class TodoListStatusCollectionViewCell: UICollectionViewCell {
     
-    let icon = UIButton()
+    let icon = IconButton()
     let totalCountLabel = UILabel()
     let titleLabel = UILabel()
     
@@ -26,9 +26,8 @@ class TodoListStatusCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bind(image: UIImage?, imageColor: UIColor, count: Int, title: String) {
-        icon.setImage(image, for: .normal)
-        icon.backgroundColor = imageColor
+    func bind(imageStr: String, imageColor: UIColor, count: Int, title: String) {
+        icon.configure(iconStr: imageStr, color: imageColor)
         totalCountLabel.text = String(count)
         titleLabel.text = title
     }
@@ -60,13 +59,6 @@ class TodoListStatusCollectionViewCell: UICollectionViewCell {
     func configureView() {
         contentView.backgroundColor = .secondarySystemBackground
         contentView.layer.cornerRadius = 12
-        
-        // 아이콘
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .light)
-        let image = UIImage(systemName: "heart", withConfiguration: imageConfig)
-        icon.setImage(image, for: .normal)
-        icon.layer.cornerRadius = 15
-        icon.tintColor = .white
         
         // todo 수
         totalCountLabel.text = "0"

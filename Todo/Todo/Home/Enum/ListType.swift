@@ -82,10 +82,3 @@ enum ListType: String, CaseIterable {
         return todoList.count
     }
 }
-
-extension ListType {
-    func asImage() -> UIImage? {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .light)
-        return UIImage(systemName: imageString, withConfiguration: imageConfig)
-    }
-}

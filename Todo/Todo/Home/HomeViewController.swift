@@ -139,7 +139,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "statusCell", for: indexPath) as! TodoListStatusCollectionViewCell
         
         let list = ListType.allCases[indexPath.item]
-        cell.bind(image: list.asImage(), imageColor: list.imageColor, count: list.totalCount, title: list.title)
+        cell.bind(imageStr: list.imageString, imageColor: list.imageColor, count: list.totalCount, title: list.title)
         
         return cell
     }
