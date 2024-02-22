@@ -19,12 +19,9 @@ class MyListTableViewCell: UITableViewCell {
     }
     
     func configureView() {
-        textLabel?.text = "사야 함"
         textLabel?.font = .boldSystemFont(ofSize: 20)
-        detailTextLabel?.text = "4"
         detailTextLabel?.font = .boldSystemFont(ofSize: 18)
         detailTextLabel?.textColor = .lightText
-        imageView?.image = UIImage(systemName: "list")
         imageView?.layer.cornerRadius = (imageView?.frame.width ?? 30) / 2
         accessoryType = .disclosureIndicator
     }

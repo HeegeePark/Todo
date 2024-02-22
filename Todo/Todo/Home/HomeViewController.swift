@@ -159,8 +159,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: MyListTableViewCell.identifier, for: indexPath) as! MyListTableViewCell
+        let mylist = myList[indexPath.row]
         cell.selectionStyle = .none
-        
+        cell.bindData(mylist: mylist)
         
         return cell
     }

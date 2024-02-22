@@ -23,7 +23,6 @@ class BaseRepository<T: Object> {
     }
     
     func fetch() -> Results<Model> {
-        print(realm.configuration.fileURL)
         return realm.objects(Model.self)
     }
     
