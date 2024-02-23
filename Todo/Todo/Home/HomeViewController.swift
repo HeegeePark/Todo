@@ -115,7 +115,7 @@ class HomeViewController: BaseViewController {
         }()
         
         let newTodo = UIBarButtonItem(customView: newButton)
-        let addList = UIBarButtonItem(title: "목록 추가", image: nil, target: self, action: nil)
+        let addList = UIBarButtonItem(title: "목록 추가", image: nil, target: self, action: #selector(addListbuttonClicked))
         toolbarItems = [newTodo, flexibleSpace, addList]
     }
     
@@ -124,6 +124,16 @@ class HomeViewController: BaseViewController {
         
         vc.doneButtonTapHandler = {
             self.collectionView.reloadData()
+        }
+        
+        present(UINavigationController(rootViewController: vc), animated: true)
+    }
+    
+    @objc private func addListbuttonClicked() {
+        let vc = AddMyListViewController()
+        
+        vc.doneButtonTapHandler = {
+            self.myListView.tableView.reloadData()
         }
         
         present(UINavigationController(rootViewController: vc), animated: true)

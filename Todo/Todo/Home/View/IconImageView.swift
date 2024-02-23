@@ -8,7 +8,7 @@
 import UIKit
 
 class IconButton: UIButton {
-    let imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold)
+    var imageConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
