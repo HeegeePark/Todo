@@ -27,13 +27,15 @@ class AddMyListViewController: BaseViewController {
     }()
     
     var listTitle: String = ""
-    var color: UIColor = .red {
+    var colorTag: Int = 0 {
         didSet {
-            iconButton.backgroundColor = color
+            iconButton.backgroundColor = IconColorType.allCases[colorTag].color
         }
     }
     
     var doneButtonTapHandler: (() -> Void)?
+    
+    let repository = MyListModelRepository()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +62,7 @@ class AddMyListViewController: BaseViewController {
             return
         }
         
-        // TODO: Realm Create
+        repository.createItem(asMyListModel())
         
         doneButtonTapHandler?()
         dismiss(animated: true)
@@ -72,6 +74,10 @@ class AddMyListViewController: BaseViewController {
     
     func isFilledRequired() -> Bool {
         return !listTitle.isEmpty
+    }
+    
+    func asMyListModel() -> MyListModel {
+        return MyListModel(title: listTitle, color: colorTag)
     }
     
     override func configureHierarchy() {
@@ -132,7 +138,8 @@ extension AddMyListViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectColorCollectionViewCell.identifier, for: indexPath) as! SelectColorCollectionViewCell
         
-        color = IconColorType.allCases[indexPath.item].color
+        colorTag = indexPath.item
+        let color = IconColorType.allCases[colorTag].color
         cell.setColor(color)
         
         return cell
@@ -142,6 +149,6 @@ extension AddMyListViewController: UICollectionViewDataSource, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectColorCollectionViewCell.identifier, for: indexPath) as! SelectColorCollectionViewCell
         cell.setSelected()
         
-        color = IconColorType.allCases[indexPath.item].color
+        colorTag = indexPath.item
     }
 }

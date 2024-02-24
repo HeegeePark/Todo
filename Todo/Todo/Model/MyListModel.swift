@@ -13,14 +13,12 @@ class MyListModel: Object {
     @Persisted var title: String   // 제목
     @Persisted var regDate: Date   // 등록일
     @Persisted var color: Int   // 테마색
-    @Persisted var icon: String   // 아이콘
     @Persisted var todos: List<TodoModel>   // TodoModel Realm List
     
-    convenience init(title: String, color: Int, icon: String) {
+    convenience init(title: String, color: Int) {
         self.init()
         self.title = title
         self.regDate = Date()
         self.color = color
-        self.icon = icon
     }
 }

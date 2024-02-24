@@ -48,7 +48,7 @@ class MyListTableViewCell: UITableViewCell {
     func bindData(mylist: MyListModel) {
         textLabel?.text = mylist.title
         let color = IconColorType.allCases[mylist.color].color
-        iconButton.configure(iconStr: mylist.icon, color: color)
+        iconButton.configure(iconStr: "list.dash", color: color)
         detailTextLabel?.text = "\(mylist.todos.count)"
     }
 }

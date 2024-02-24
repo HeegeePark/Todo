@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let configuration = Realm.Configuration(schemaVersion: 2) { migration, oldSchemaVersion in
+        let configuration = Realm.Configuration(schemaVersion: 3) { migration, oldSchemaVersion in
             
             
             // MyListModel 테이블 추가
@@ -26,7 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // MyListModel 테이블 color 컬럼 타입 변경(String -> Int)
             if oldSchemaVersion < 2 {
-                print("Schema version 0 -> 1")
+                print("Schema version 1 -> 2")
+            }
+            
+            // MyListModel 테이블 icon 컬럼 제거
+            if oldSchemaVersion < 3 {
+                print("Schema version 2 -> 3")
             }
         }
         
