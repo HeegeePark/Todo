@@ -23,20 +23,21 @@ class MyListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureLayout() {
+    private func configureLayout() {
         iconButton.snp.makeConstraints { make in
             make.leading.equalTo(contentView).inset(10)
             make.centerY.equalTo(contentView)
             make.size.equalTo(30)
         }
         
+        // TODO: 이거 왜 되다가 안될까유? ㅡㅡ+
         textLabel!.snp.makeConstraints { make in
             make.leading.equalTo(iconButton.snp.trailing).offset(10)
             make.centerY.equalTo(contentView)
         }
     }
     
-    func configureView() {
+    private func configureView() {
         imageView?.backgroundColor = .blue
         textLabel?.font = .boldSystemFont(ofSize: 20)
         detailTextLabel?.font = .boldSystemFont(ofSize: 18)

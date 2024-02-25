@@ -51,6 +51,7 @@ class HomeViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         collectionView.reloadData()
+        myListView.tableView.reloadData()
     }
     
     override func configureHierarchy() {
