@@ -39,7 +39,8 @@ class TodoViewController: BaseViewController {
     var deleteButtonTapHandler: (() -> Void)?
     var doneButtonTapHandler: (() -> Void)?
     
-    let repository = TodoModelRepository()
+    let todoModelRepository = TodoModelRepository()
+    let myListModelRepository = MyListModelRepository()
     
     let editType: TodoEditType
     
@@ -88,6 +89,7 @@ class TodoViewController: BaseViewController {
             }
             
             if let mylist = todo.mylist.first {
+                myListModel = mylist
                 fromPassData[5] = mylist.title
             }
         }
@@ -133,15 +135,28 @@ class TodoViewController: BaseViewController {
         switch editType {
         case .create:
             let todo = asTodoModel()
-            repository.createItem(todo)
+            todoModelRepository.createItem(todo)
             
             if let selectedImage {
                 ImageManager.shared.saveImageToDocument(image: selectedImage, filename: "\(todo.id)")
             }
             
+            if let myListModel {
+                myListModelRepository.updateTodo(item: myListModel, todo: todo)
+            }
+            
         case .update(let todo):
             let updated = asTodoModel()
-            repository.updateItem(id: todo.id, updated: updated)
+            todoModelRepository.updateItem(id: todo.id, updated: updated)
+            
+            if let myListModel {
+                if let prevMyList = todo.mylist.first {
+                    // 원래 mylist에서 item 제거
+                    myListModelRepository.deleteTodo(item: prevMyList, todo: todo)
+                }
+                // 바뀐 mylist에 item 추가
+                myListModelRepository.updateTodo(item: myListModel, todo: todo)
+            }
         }
         
         doneButtonTapHandler?()
