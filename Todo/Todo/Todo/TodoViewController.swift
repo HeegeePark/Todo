@@ -15,6 +15,7 @@ class TodoViewController: BaseViewController {
     
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
+    // TODO: 효율적인 데이터 저장 방법 고민할 것
     var content: [String] = Array(repeating: "", count: TodoType.content.numberOfRows) {
         didSet {
             tableView.reloadData()
@@ -81,8 +82,11 @@ class TodoViewController: BaseViewController {
             }
             
             if let image = todo.image {
-                // TODO: UIImage 띄우기로 바꾸기
                 selectedImage = ImageManager.shared.loadImageFromDocument(filename: "\(todo.id)")
+            }
+            
+            if let mylist = todo.mylist.first {
+                fromPassData[5] = mylist.title
             }
         }
     }

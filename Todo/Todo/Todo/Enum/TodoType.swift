@@ -13,6 +13,7 @@ enum TodoType: String, CaseIterable {
     case tag
     case priority
     case image
+    case mylist
     
     var cellText: [String] {
         switch self {
@@ -26,6 +27,8 @@ enum TodoType: String, CaseIterable {
             return ["우선 순위"]
         case .image:
             return ["이미지 추가"]
+        case .mylist:
+            return ["목록"]
         }
     }
     
@@ -45,6 +48,8 @@ enum TodoType: String, CaseIterable {
             return PriorityViewController()
         case .image:
             return ImageViewController()
+        case .mylist:
+            return SelectMyListViewController()
         }
     }
 }
