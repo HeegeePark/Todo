@@ -24,6 +24,10 @@ class TodoSubTitleStyleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        detailTextLabel?.text = ""
+    }
+    
     func configure() {
         contentView.addSubview(rightImageView)
         
