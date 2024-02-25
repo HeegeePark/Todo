@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-enum ListType: String, CaseIterable {
+enum ListType: CaseIterable {
     case today
     case schedule
     case all

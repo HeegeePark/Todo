@@ -9,10 +9,11 @@ import UIKit
 import RealmSwift
 
 protocol TodoListFetchable where Self: UIViewController {
-    var type: ListType { get }
+    var type: TodoListModeType { get }
 }
 
 class TodoListViewController: BaseViewController, TodoListFetchable {
+    
     let tableView = UITableView()
     
     var todoList: Results<TodoModel>! {
@@ -23,10 +24,10 @@ class TodoListViewController: BaseViewController, TodoListFetchable {
     
     let repository = TodoModelRepository()
     
-    var type: ListType
+    var type: TodoListModeType
     
-    init(type: ListType) {
-        self.type = type
+    init(mode: TodoListModeType) {
+        self.type = mode
         super.init(nibName: nil, bundle: nil)
     }
     

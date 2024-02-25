@@ -32,6 +32,10 @@ class TodoModelRepository: BaseRepository<TodoModel> {
         return super.fetch().filter("isFlag == true")
     }
     
+    func fetchTodosByMyList(item: MyListModel) -> Results<TodoModel> {
+        return item.todos.filter("TRUEPREDICATE")
+    }
+    
     override func updateItem(id: ObjectId, updated: BaseRepository<TodoModel>.Model) {
         do {
             try realm.write {

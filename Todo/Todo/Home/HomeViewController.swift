@@ -158,7 +158,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let type = ListType.allCases[indexPath.item]
         
-        let vc = TodoListViewController(type: type)
+        let vc = TodoListViewController(mode: .default(type))
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -175,6 +175,13 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         cell.bindData(mylist: mylist)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectdMyList = myList[indexPath.row]
+        
+        let vc = TodoListViewController(mode: .mylist(selectdMyList))
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
