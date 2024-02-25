@@ -34,6 +34,8 @@ class TodoViewController: BaseViewController {
         }
     }
     
+    var myListModel: MyListModel?
+    
     var deleteButtonTapHandler: (() -> Void)?
     var doneButtonTapHandler: (() -> Void)?
     
@@ -81,7 +83,7 @@ class TodoViewController: BaseViewController {
                 fromPassData[3] = priority
             }
             
-            if let image = todo.image {
+            if let _ = todo.image {
                 selectedImage = ImageManager.shared.loadImageFromDocument(filename: "\(todo.id)")
             }
             
@@ -250,6 +252,17 @@ extension TodoViewController: UITableViewDataSource, UITableViewDelegate {
             }
             
             navigationController?.pushViewController(vc, animated: true)
+            
+        case .mylist:
+            let vc = type.nextToPush!
+        
+            vc.passData = { data in
+                self.myListModel = data as? MyListModel
+                self.fromPassData[indexPath.section] = self.myListModel?.title ?? ""
+            }
+            
+            navigationController?.pushViewController(vc, animated: true)
+            
         default:
             let vc = type.nextToPush!
         

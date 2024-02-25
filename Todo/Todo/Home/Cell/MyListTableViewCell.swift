@@ -11,16 +11,28 @@ import SnapKit
 class MyListTableViewCell: UITableViewCell {
     
     let iconButton = IconButton()
+    let checkButton = UIButton()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(iconButton)
+        
+        configureHierarchy()
         configureLayout()
         configureView()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        checkButton.isHidden = true
+    }
+    
+    private func configureHierarchy() {
+        contentView.addSubview(iconButton)
+        contentView.addSubview(checkButton)
     }
     
     private func configureLayout() {
@@ -35,6 +47,12 @@ class MyListTableViewCell: UITableViewCell {
             make.leading.equalTo(iconButton.snp.trailing).offset(10)
             make.centerY.equalTo(contentView)
         }
+        
+        checkButton.snp.makeConstraints { make in
+            make.trailing.equalTo(contentView).inset(10)
+            make.centerY.equalTo(contentView)
+            make.size.equalTo(30)
+        }
     }
     
     private func configureView() {
@@ -44,6 +62,10 @@ class MyListTableViewCell: UITableViewCell {
         detailTextLabel?.textColor = .lightText
         imageView?.tintColor = .white
         accessoryType = .disclosureIndicator
+        checkButton.isHidden = true
+        let config = UIImage.SymbolConfiguration(scale: .large)
+        checkButton.setImage(UIImage(systemName: "checkmark")?.withConfiguration(config), for: .normal)
+        checkButton.tintColor = .systemBlue
     }
     
     func bindData(mylist: MyListModel) {
@@ -51,5 +73,12 @@ class MyListTableViewCell: UITableViewCell {
         let color = IconColorType.allCases[mylist.color].color
         iconButton.configure(iconStr: "list.dash", color: color)
         detailTextLabel?.text = "\(mylist.todos.count)"
+    }
+    
+    // 할 일 등록 시, 나의 목록 선택할 때만 호출
+    func activateCheckButton(isSelectd: Bool) {
+        accessoryType = .none
+        detailTextLabel?.isHidden = true
+        checkButton.isHidden = !isSelectd
     }
 }
